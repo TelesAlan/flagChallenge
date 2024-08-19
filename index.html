@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Que bandeira é essa?</title>
+
+    <!-- Meta tags para SEO -->
+    <meta name="description"
+        content="Jogo interativo de adivinhação de bandeiras de países. Teste seu conhecimento e divirta-se aprendendo!">
+    <meta name="keywords"
+        content="jogo das bandeiras, quiz de bandeiras, adivinhação de países, aprendizado de bandeiras">
+    <meta name="author" content="Alan Teles">
+    <meta name="robots" content="index, follow">
+
+    <!-- Meta tags para redes sociais -->
+    <meta property="og:title" content="Desafio das Bandeiras">
+    <meta property="og:description"
+        content="Jogo interativo para testar seu conhecimento sobre as bandeiras dos países.">
+    <meta property="og:image" content="URL_DA_IMAGEM_DE_PREVIEW">
+    <meta property="og:url" content="URL_DO_SEU_SITE">
+    <meta property="og:type" content="website">
+
+    <!-- Meta tags para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Desafio das Bandeiras">
+    <meta name="twitter:description" content="Teste seu conhecimento sobre bandeiras com este jogo interativo!">
+    <meta name="twitter:image" content="URL_DA_IMAGEM_DE_PREVIEW">
+
+    <!-- Meta tag de favicon -->
+    <!-- <link rel="icon" href="URL_DO_FAVICON" type="image/png"> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap">
+
+    <style>
+        body {
+            background-color: #1D1128;
+            font-family: "Exo 2", sans-serif;
+        }
+
+        /***************
+        * SCROLL BAR
+        ***************/
+        ::-webkit-scrollbar {
+            width: 0.6vw;
+            height: .6vh;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 5px;
+        }
+
+        h2,
+        footer {
+            color: #fff;
+        }
+
+        .card {
+            border-radius: 25px !important;
+        }
+
+        .card img {
+            border-top-left-radius: 25px !important;
+            border-top-right-radius: 25px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container-fluid py-5">
+        <div class="row justify-content-center">
+            <div class="col-xs-12 col-lg-6 col-md-6 col-xl-4">
+                <h2 class="text-center mb-4">Que bandeira é essa?</h2>
+
+                <div class="card">
+                    <img src="./assets/img/image.png" class="card-img-top border" id="img_flag" height="240">
+
+                    <div class="text-center font-italic mt-3" id="counter_flag"></div>
+
+                    <form id="form_flag" class="card-body">
+                        <div class="input-group">
+                            <select name="select_flag" id="select_flag" class="form-control" data-live-search="true"
+                                disabled>
+                                <option value="" disabled selected>Escolha o país...</option>
+                            </select>
+                            <button id="btn-submit" class="btn btn-success" type="submit" disabled>Verificar</button>
+                        </div>
+
+                        <div class="text-right font-italic mt-2" id="attemp_flag"></div>
+
+                        <ul id="attemp_log" class="list-group"></ul>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-around aling-items-center">
+                            <button type="button" id="btn-tip-1" class="btn btn-link btn-sm float-right"
+                                data-toggle="tooltip">Dica 1</button>
+                            <button type="button" id="btn-tip-2" class="btn btn-link btn-sm float-right"
+                                data-toggle="tooltip">Dica 2</button>
+                            <button type="button" id="btn-tip-3" class="btn btn-link btn-sm float-right"
+                                data-toggle="tooltip">Dica 3</button>
+                        </div>
+
+                        <hr />
+
+                        <div class="text-center">
+                            <button type="button" id="btn-next" class="btn btn-link btn-sm">
+                                <small>Não sabe que país é esse? Clique aqui e vá para a próxima bandeira.</small>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-5">
+            <p>Desenvolvido por <a href="https://github.com/TelesAlan" target="_blank">Alan Teles</a>.</p>
+        </footer>
+
+        <div class="modal fade" id="modalHitsLog" tabindex="-1" aria-labelledby="modalHitsLogLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalHitsLogLabel">Log de acertos</h5>
+                    </div>
+                    <div class="modal-body" id="hits_log">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+
+    <script src="js/Flags.class.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
